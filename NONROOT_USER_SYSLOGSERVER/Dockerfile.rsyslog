@@ -1,0 +1,28 @@
+FROM alpine
+ARG RSYSLOGCONFNONROOT=10-docker-nonroot.conf
+
+# Create a non-root user.
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Download and install rsyslog and logrotate.
+RUN apk add rsyslog
+RUN apk add logrotate
+
+VOLUME [ "/var/log", "/etc/rsyslog.d" ]
+
+# Copy rsyslog configurations onto syslogserver image.
+COPY ${RSYSLOGCONFNONROOT} /etc/rsyslog.d/10-docker-nonroot.conf
+
+#COPY ${LOGROTATECONF} /etc/logrotate.d/dockerlogrotate
+
+# Add tcp configurations onto the rsyslog.conf file. 
+RUN echo '$PreserveFQDN on' >> /etc/rsyslog.conf
+RUN echo 'module(load="imtcp")' >> /etc/rsyslog.conf
+RUN echo 'input(type="imtcp" port="514")' >> /etc/rsyslog.conf
+EXPOSE 514
+
+# rsyslogd will run on container start up.
+ENTRYPOINT ["rsyslogd", "-n"]
+
+# Makes the syslogserver have appuser as default.
+USER appuser
