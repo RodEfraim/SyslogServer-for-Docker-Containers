@@ -1,0 +1,17 @@
+FROM alpine
+ARG RSYSLOGCONF=10-docker.conf
+
+# Install rsyslog and logrotate.
+RUN apk add rsyslog
+RUN apk add logrotate
+
+VOLUME [ "/var/log", "/etc/rsyslog.d" ]
+COPY ${RSYSLOGCONF} /etc/rsyslog.d/10-docker.conf
+
+# Configure TCP connection on the rsyslog.conf file.
+RUN echo '$PreserveFQDN on' >> /etc/rsyslog.conf
+RUN echo 'module(load="imtcp")' >> /etc/rsyslog.conf
+RUN echo 'input(type="imtcp" port="514")' >> /etc/rsyslog.conf
+
+EXPOSE 514
+ENTRYPOINT ["rsyslogd", "-n"]
