@@ -7,9 +7,9 @@ Run the following command:
 sudo docker-compose up -d
 ```
 
-This docker command will spin up the syslogserver, container5 and container6 docker containers. Note that container5 and container6 are just dummy containers used to demonstrate that syslogserver can indeed store the logs from other docker microservices.
+This docker command will spin up the syslogserver, container5 and container6 docker containers. Note that container5 and container6 are just dummy containers used to demonstrate that syslogserver can indeed store the logs from other dockerer containers.
 
-To see the centralized logs you can enter the syslogser by running the command below and navigativng to /var/log/docker
+To see the centralized logs you can enter the syslogserver by running the command below and then navigativng to /var/log/docker
 
 ```
 sudo docker exec -it syslogserver /bin/sh
