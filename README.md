@@ -1,4 +1,4 @@
-# Syslogserver for Docker Containers
+# Syslog Server for Docker Containers
 A centralized syslog server to accompany any Docker containers.
 
 Run the following command:
